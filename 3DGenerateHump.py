@@ -9,7 +9,7 @@ import scipy.io as io
 import matplotlib.pyplot as plt
 import scipy.io as sio
 from mpl_toolkits.mplot3d import Axes3D
-from utils.a import sampleShow,getUpData,getDefect,replaceDefect,getDefectArea,saveMat,OffsetDefect
+from utils.a import sampleShow,getUpData,getDefect,replaceDefect,getDefectArea,saveMat,OffsetDefect,stlcreator
 import numpy as np
 file = "./HaveDefect.mat"  # 有凸起缺陷缺陷的钢轨
 file2="./NoDefect.mat"#正常钢轨
@@ -52,7 +52,7 @@ sampleShow(defect)
 offsetX=[flatX1-xleft,flatX2-xright]
 offsetY=[flatY1-yleft,flatY2-yright] 
 print("缺陷在平坦区域的可偏移范围为：",offsetX,offsetY)
-for i in range(100):
+for i in range(2):
 
     #在范围内取随机数，得到想要偏移的值
     Xoff=np.random.uniform(offsetX[0],offsetX[1])
@@ -66,5 +66,7 @@ for i in range(100):
     def generate(x1, x2, x3):
         pass
     # 将其转化为mat文件保存
-    saveMat(GenerateDefectRail,i)
+    #saveMat(GenerateDefectRail,i)
+    #保存为stl文件
+    stlcreator(GenerateDefectRail,i+2)
 

@@ -71,7 +71,7 @@ def saveMat(XYZ,name):
     for i in range(len(x)):
         f.append([x[i], y[i], z[i]])
     io.savemat(
-        '/Users/wenkaicui/Desktop/科研/虚实结合项目/GenerateHumpOut/'+str(name)+'.mat', {'XYZ': f})  # 绝对路径
+        './GenerateHumpOut/'+str(name)+'.mat', {'XYZ': f})  # 绝对路径
 #对缺陷位置进行偏移，让缺陷出现在钢轨的偏移后位置上
 def OffsetDefect(defect,offX,offY):
     tmp=[]
@@ -83,25 +83,26 @@ def OffsetDefect(defect,offX,offY):
     tmp=np.array(tmp)  
     return tmp
 
-# #将3D点云保存为stl文件
-# import numpy as np
-# from mayavi import mlab
-# import vtk
-# from scipy.spatial import Delaunay
+#将3D点云保存为stl文件
+import numpy as np
+from mayavi import mlab
+import vtk
+from scipy.spatial import Delaunay
 
-# def stlcreator(pm,filepath):
-#     """根据点云数据生成stl文件"""
-#     # pm为三维点云数组
-#     x = pm[:, 0]
-#     y = pm[:, 1]
-#     z = pm[:, 2]
-#     xy = np.column_stack((x, y))
-#     tri = Delaunay(xy)    # 划分平面三角网格
-#     element = tri.simplices    # 每一个三角网格所包含点的索引号
-#     surface = mlab.pipeline.triangular_mesh_source(x, y, z, element)    # 建立三角曲面
-#     surface_vtk = surface.outputs[0]._vtk_obj    # 生成vtk文件
-#     stlWriter = vtk.vtkSTLWriter()    # stl生成器
-#     stlWriter.SetFileName(filepath)    # 设置文件路径
-#     stlWriter.SetInputConnection(surface_vtk.GetOutputPort())    # 设置stlWriter的vtk接口
-#     stlWriter.Write()    # 保存曲面为stl
+def stlcreator(pm,i):
+    """根据点云数据生成stl文件"""
+    # pm为三维点云数组
+    x = pm[:, 0]
+    y = pm[:, 1]
+    z = pm[:, 2]
+    xy = np.column_stack((x, y));
+    tri = Delaunay(xy);    # 划分平面三角网格
+    element = tri.simplices;    # 每一个三角网格所包含点的索引号
+    surface = mlab.pipeline.triangular_mesh_source(x, y, z, element);    # 建立三角曲面
+    surface_vtk = surface.outputs[0]._vtk_obj;    # 生成vtk文件
+    stlWriter = vtk.vtkSTLWriter();    # stl生成器
+    filepath="./GenerateHumpOut/"+str(i)+".stl";
+    stlWriter.SetFileName(filepath)    # 设置文件路径
+    stlWriter.SetInputConnection(surface_vtk.GetOutputPort());    # 设置stlWriter的vtk接口
+    stlWriter.Write();    # 保存曲面为stl
 
