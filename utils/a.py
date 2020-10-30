@@ -82,7 +82,17 @@ def OffsetDefect(defect,offX,offY):
         tmp.append(point)
     tmp=np.array(tmp)  
     return tmp
-
+#对缺陷位置进行偏移，并且生成对应的凹陷
+def OffsetDefectIn(defect,offX,offY,zNormal):
+    tmp=[]
+    defe=copy.deepcopy(defect)
+    for point in defe:
+        point[0]=point[0]+offX
+        point[1]=point[1]+offY
+        point[2]=zNormal-point[2]
+        tmp.append(point)
+    tmp=np.array(tmp)  
+    return tmp
 #将3D点云保存为stl文件
 import numpy as np
 from mayavi import mlab

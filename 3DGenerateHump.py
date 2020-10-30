@@ -9,7 +9,7 @@ import scipy.io as io
 import matplotlib.pyplot as plt
 import scipy.io as sio
 from mpl_toolkits.mplot3d import Axes3D
-from utils.a import sampleShow,getUpData,getDefect,replaceDefect,getDefectArea,saveMat,OffsetDefect,stlcreator
+from utils.a import sampleShow,getUpData,getDefect,replaceDefect,getDefectArea,saveMat,OffsetDefect,stlcreator,OffsetDefectIn
 import numpy as np
 file = "./HaveDefect.mat"  # 有凸起缺陷缺陷的钢轨
 file2="./NoDefect.mat"#正常钢轨
@@ -69,4 +69,18 @@ for i in range(2):
     #saveMat(GenerateDefectRail,i)
     #保存为stl文件
     stlcreator(GenerateDefectRail,i+2)
+for i in range(2):
+    
+    #在范围内取随机数，得到想要偏移的值
+    Xoff=np.random.uniform(offsetX[0],offsetX[1])
+    Yoff=np.random.uniform(20,70)
+    #根据偏移的值来偏移缺陷
+    offDefect=OffsetDefectIn(defect,Xoff,Yoff,zNormal)
+    #在正常上挖去缺陷大小的一片区域,并把缺陷替换上去
+    GenerateDefectRail=replaceDefect(XYZNormal,offDefect)
+    sampleShow(GenerateDefectRail,20)
+    # 将其转化为mat文件保存
+    #saveMat(GenerateDefectRail,i)
+    #保存为stl文件
+    stlcreator(GenerateDefectRail,i+100)
 
