@@ -119,9 +119,9 @@ def scaleDefect(defect,i):
     tmp=[]
     defe=copy.deepcopy(defect)
     for point in defe:
-        point[0]=point[0]*0.6*i
-        point[1]=point[1]*0.6*i
-        point[2]=point[2]*0.6*i
+        point[0]=point[0]*0.6*(i+1)
+        point[1]=point[1]*0.6*(i+1)
+        point[2]=point[2]*0.6*(i+1)
         tmp.append(point)
     tmp=np.array(tmp)
     return tmp

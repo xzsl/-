@@ -12,15 +12,13 @@ from mpl_toolkits.mplot3d import Axes3D
 from utils.a import sampleShow,getUpData,getDefect,replaceDefect,getDefectArea,saveMat,OffsetDefect,stlcreator,OffsetDefectIn,scaleDefect
 import numpy as np
 import copy
-
-file = "自动化生成缺陷代码/HaveDefect.mat"  # 有凸起缺陷缺陷的钢轨
-file2="自动化生成缺陷代码/NoDefect.mat"#正常钢轨
-
-
-
-
-data = loadmat(file, mat_dtype=True)
-XYZ = data['XYZ']
+import open3d as o3d
+pcd1= o3d.io.read_point_cloud("./pcd文件/60轨-无底-无腰-100mm-有缺陷.pcd")
+XYZ=np.asarray(pcd1.points)
+XYZ=XYZ*1000#把单位转化为mm，如果不转化为mm会出错
+pcd2=o3d.io.read_point_cloud("./pcd文件/60轨-无底-无腰-100mm.pcd")
+XYZNormal=np.asarray(pcd2.points)
+XYZNormal=XYZNormal*1000
 # 输出点云形状
 print(XYZ.shape)
 x = XYZ[:, 0]
@@ -42,8 +40,6 @@ flatX1,flatX2=min(tmp[:,0])+5, max(tmp[:,0])-5
 flatY1,flatY2=min(tmp[:,1])+5, max(tmp[:,1])-5
 flat=[flatX1,flatX2,flatY1,flatY2]
 # 获取缺陷信息
-dataNormal = loadmat(file2, mat_dtype=True)
-XYZNormal = dataNormal['XYZ']
 zNormal=max(XYZNormal[:,2])
 defect=getDefect(tmp,zNormal)#根据正常钢轨的最高点找出缺陷位置
 sampleShow(defect)
@@ -74,7 +70,7 @@ for i in range(2):
     # 将其转化为mat文件保存
     #saveMat(GenerateDefectRail,i)
     #保存为stl文件
-    #stlcreator(GenerateDefectRail,str(i))
+    stlcreator(GenerateDefectRail,str(i))
 #反向保存为凹陷
 for i in range(2):
     
@@ -89,7 +85,7 @@ for i in range(2):
     # 将其转化为mat文件保存
     #saveMat(GenerateDefectRail,i)
     #保存为stl文件
-    #stlcreator(GenerateDefectRail,"In"+str(i))
+    stlcreator(GenerateDefectRail,"In"+str(i))
 #将原始的defect深拷贝到OriDefect中
 #将缺陷改变大小再进行生成凸起
 
@@ -106,7 +102,7 @@ for i in range(2):
     # 将其转化为mat文件保存
     #saveMat(GenerateDefectRail,i)
     #保存为stl文件
-    stlcreator(GenerateDefectRail,"test"+str(i))
+    stlcreator(GenerateDefectRail,"scale"+str(i))
 #将缺陷旋转后再进行生成
 
 
