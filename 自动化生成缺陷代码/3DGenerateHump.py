@@ -9,15 +9,13 @@ import scipy.io as io
 import matplotlib.pyplot as plt
 import scipy.io as sio
 from mpl_toolkits.mplot3d import Axes3D
-from utils.a import sampleShow,getUpData,getDefect,replaceDefect,getDefectArea,saveMat,OffsetDefect,stlcreator,OffsetDefectIn
+from utils.a import sampleShow,getUpData,getDefect,replaceDefect,getDefectArea,saveMat,OffsetDefect,stlcreator,OffsetDefectIn,scaleDefect
 import numpy as np
 import copy
 
-file = "./HaveDefect.mat"  # 有凸起缺陷缺陷的钢轨
-file2="./NoDefect.mat"#正常钢轨
+file = "自动化生成缺陷代码/HaveDefect.mat"  # 有凸起缺陷缺陷的钢轨
+file2="自动化生成缺陷代码/NoDefect.mat"#正常钢轨
 
-
-stlcreator(file2,"test1105")
 
 
 
@@ -69,7 +67,7 @@ for i in range(2):
     offDefect=OffsetDefect(defect,Xoff,Yoff)
     #在正常上挖去缺陷大小的一片区域,并把缺陷替换上去
     GenerateDefectRail=replaceDefect(XYZNormal,offDefect)
-    sampleShow(GenerateDefectRail,20)
+    #sampleShow(GenerateDefectRail,20)
     # 自动生成缺陷
     def generate(x1, x2, x3):
         pass
@@ -83,24 +81,25 @@ for i in range(2):
     #在范围内取随机数，得到想要偏移的值
     Xoff=np.random.uniform(offsetX[0],offsetX[1])
     Yoff=np.random.uniform(20,70)
-    #根据偏移的值来偏移缺陷
+    #根据偏移的值来偏移缺陷，同时缩小
     offDefect=OffsetDefectIn(defect,Xoff,Yoff,zNormal)
     #在正常上挖去缺陷大小的一片区域,并把缺陷替换上去
     GenerateDefectRail=replaceDefect(XYZNormal,offDefect)
-    sampleShow(GenerateDefectRail,20)
+    #sampleShow(GenerateDefectRail,20)
     # 将其转化为mat文件保存
     #saveMat(GenerateDefectRail,i)
     #保存为stl文件
     #stlcreator(GenerateDefectRail,"In"+str(i))
 #将原始的defect深拷贝到OriDefect中
 #将缺陷改变大小再进行生成凸起
-tmpdefect=scaleVariation
+
 for i in range(2):
+    tmpdefect=scaleDefect(defect,i)
     #在范围内取随机数，得到想要偏移的值
     Xoff=np.random.uniform(offsetX[0],offsetX[1])
     Yoff=np.random.uniform(20,70)
     #根据偏移的值来偏移缺陷
-    offDefect=OffsetDefect(defect,Xoff,Yoff)
+    offDefect=OffsetDefect(tmpdefect,Xoff,Yoff)
     #在正常上挖去缺陷大小的一片区域,并把缺陷替换上去
     GenerateDefectRail=replaceDefect(XYZNormal,offDefect)
     #sampleShow(GenerateDefectRail,20)

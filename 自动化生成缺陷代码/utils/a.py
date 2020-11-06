@@ -55,8 +55,8 @@ def replaceDefect(XYZ,defect):
     xleft,xright=min(defect[:,0]),max(defect[:,0])
     yleft,yright=min(defect[:,1]),max(defect[:,1])
     for point in XYZ:
-        # if not(point[0]>xleft and point[0]<xright and point[1]>yleft and point[1]<yright):
-        tmp.append(point)
+        if not(point[0]>xleft and point[0]<xright and point[1]>yleft and point[1]<yright):
+            tmp.append(point)
      #添加缺陷
     for point in defect:
         tmp.append(point)
@@ -111,8 +111,18 @@ def stlcreator(pm,i):
     surface = mlab.pipeline.triangular_mesh_source(x, y, z, element);    # 建立三角曲面
     surface_vtk = surface.outputs[0]._vtk_obj;    # 生成vtk文件
     stlWriter = vtk.vtkSTLWriter();    # stl生成器
-    filepath="./GenerateHumpOut/"+i+".stl";
+    filepath="/Users/wenkaicui/Desktop/科研/虚实结合STL生成/"+i+".stl";
     stlWriter.SetFileName(filepath)    # 设置文件路径
     stlWriter.SetInputConnection(surface_vtk.GetOutputPort());    # 设置stlWriter的vtk接口
     stlWriter.Write();    # 保存曲面为stl
+def scaleDefect(defect,i):
+    tmp=[]
+    defe=copy.deepcopy(defect)
+    for point in defe:
+        point[0]=point[0]*0.6*i
+        point[1]=point[1]*0.6*i
+        point[2]=point[2]*0.6*i
+        tmp.append(point)
+    tmp=np.array(tmp)
+    return tmp
 
